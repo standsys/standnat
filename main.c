@@ -1,7 +1,7 @@
 /*
- * standnat.c
+ * main.c
  *
- * StandSys full-mapping remote NAT kernel module
+ * entrypoint for kernel module
  *
  * Copyright (C) 2017 Yanke Guo <ryan@islandzero.net>
  *
@@ -28,7 +28,7 @@
  */
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Yanke Guo <ryan@islandzero.net>");
-MODULE_DESCRIPTION("StandSys full-mapping remote NAT kernel module");
+MODULE_DESCRIPTION("Linux kernel module for StandSys remote full-mapping NAT");
 
 /*
  * definition
