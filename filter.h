@@ -1,7 +1,7 @@
 /**
- * main.c
+ * filter.h
  *
- * entrypoint for kernel module
+ * packet filter using Netfilter
  *
  * Copyright (C) 2017 Yanke Guo <ryan@islandzero.net>
  *
@@ -19,41 +19,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "filter.h"
+#ifndef _STANDNAT_FILTER_H_
+#define _STANDNAT_FILTER_H_
 
-#include <linux/module.h>
-#include <linux/kernel.h>
-#include <linux/init.h>
-
-/*
- * module information
+/**
+ * init the filter subsystem
  */
-MODULE_LICENSE("GPL");
-MODULE_AUTHOR("Yanke Guo <ryan@islandzero.net>");
-MODULE_DESCRIPTION("Linux kernel module for StandSys remote full-mapping NAT");
+int init_filter(void);
 
-/*
- * entrypoint
+/**
+ * deinit the filter subsystem
  */
+void deinit_filter(void);
 
-static int init_standnat(void)
-{
-    int ret = 0;
-    if (0 != (ret = init_filter()))
-    {
-        goto exit;
-    }
-    printk(KERN_INFO "standnat initialized\n");
-exit:
-    return ret;
-}
-
-static void deinit_standnat(void)
-{
-    deinit_filter();
-    printk(KERN_INFO "standnat deinitialized\n");
-    return;
-}
-
-module_init(init_standnat);
-module_exit(deinit_standnat);
+#endif

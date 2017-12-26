@@ -1,7 +1,7 @@
 /**
- * main.c
+ * filter.c
  *
- * entrypoint for kernel module
+ * packet filter using Netfilter
  *
  * Copyright (C) 2017 Yanke Guo <ryan@islandzero.net>
  *
@@ -21,39 +21,30 @@
 
 #include "filter.h"
 
-#include <linux/module.h>
 #include <linux/kernel.h>
-#include <linux/init.h>
+#include <linux/module.h>
+#include <linux/netfilter.h>
+#include <linux/netfilter_ipv4.h>
 
-/*
- * module information
- */
-MODULE_LICENSE("GPL");
-MODULE_AUTHOR("Yanke Guo <ryan@islandzero.net>");
-MODULE_DESCRIPTION("Linux kernel module for StandSys remote full-mapping NAT");
+static unsigned int hook_func(void *, struct sk_buff *, const struct nf_hook_state *);
 
-/*
- * entrypoint
- */
+static struct nf_hook_ops _nf_hook = {
+    .hook = hook_func,
+    .hooknum = NF_INET_PRE_ROUTING,
+    .pf = PF_INET,
+    .priority = NF_IP_PRI_FIRST};
 
-static int init_standnat(void)
+static unsigned int hook_func(void *priv, struct sk_buff *skb, const struct nf_hook_state *state)
 {
-    int ret = 0;
-    if (0 != (ret = init_filter()))
-    {
-        goto exit;
-    }
-    printk(KERN_INFO "standnat initialized\n");
-exit:
-    return ret;
+    return NF_ACCEPT;
 }
 
-static void deinit_standnat(void)
+int init_filter(void)
 {
-    deinit_filter();
-    printk(KERN_INFO "standnat deinitialized\n");
-    return;
+    return nf_register_hook(&_nf_hook);
 }
 
-module_init(init_standnat);
-module_exit(deinit_standnat);
+void deinit_filter(void)
+{
+    nf_unregister_hook(&_nf_hook);
+}
