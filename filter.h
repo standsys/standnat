@@ -22,19 +22,12 @@
 #ifndef _STANDNAT_FILTER_H_
 #define _STANDNAT_FILTER_H_
 
-#include <linux/types.h>
-
-/**
- * whitelisted port range of from, to
- */
-struct sn_whitelist {
-    unsigned short from, to;
-};
+#include "config.h"
 
 /**
  * init the filter subsystem
  */
-int init_filter(struct sn_whitelist *whitelists, int whitelists_len, __be32 ip);
+int init_filter(struct sn_config *config);
 
 /**
  * deinit the filter subsystem

@@ -25,4 +25,21 @@
 #define SN_NAME "standnat"
 #define SN_VERSION "1.0"
 
+#define SN_MAX_IGNORED_PORT_RANGES 11
+
+#include <linux/types.h>
+
+/**
+ * config structure
+ */
+struct sn_config
+{
+    char *secret;
+    __be32 address;
+    unsigned short port;
+    unsigned short ignores[SN_MAX_IGNORED_PORT_RANGES * 2];
+};
+
+struct sn_config *init_config(void);
+
 #endif

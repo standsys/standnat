@@ -1,4 +1,3 @@
-CFLAGS_main.o := -DDEBUG
 obj-m += standnat.o
 standnat-objs := main.o filter.o utils.o config.o
 

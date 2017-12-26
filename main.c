@@ -33,31 +33,7 @@
 #include <linux/in.h>
 #include <linux/inet.h>
 
-/**
- * config
- */
-
-static char *_secret = "";
-static char *_whitelists_in = "22";
-static char *_ip_in = "";
-static int _port = 9999;
-
-module_param_named(secret, _secret, charp, 0000);
-MODULE_PARM_DESC(secret, "shared key of remote connection encryption");
-module_param_named(skip_ports, _whitelists_in, charp, 0440);
-MODULE_PARM_DESC(skip_ports, "skipped ports, command seperated, ranges are allowed with format '1-1024'");
-module_param_named(ip, _ip_in, charp, 0440);
-MODULE_PARM_DESC(ip, "public ip of this server");
-module_param_named(port, _port, int, 0440);
-MODULE_PARM_DESC(port, "listening port of remote connection");
-
-/**
- * variables
- */
-
-static struct sn_whitelist *_whitelists;
-static int _whitelists_len;
-static __be32 _ip;
+static struct sn_config *_config;
 
 /**
  * entrypoint
@@ -65,14 +41,13 @@ static __be32 _ip;
 
 static int init_standnat(void)
 {
-    // validate and decode params
     int ret = 0;
-    if ((_ip = in_aton(_ip_in)) == 0) {
-        elog("failed to initialize, invalid param ip=%s", _ip_in);
+    if ((_config = init_config()) == NULL)
+    {
         ret = -1;
         goto exit;
     }
-    if (0 != (ret = init_filter(_whitelists, _whitelists_len, _ip)))
+    if (0 != (ret = init_filter(_config)))
     {
         goto exit;
     }

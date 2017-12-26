@@ -20,3 +20,62 @@
  */
 
 #include "utils.h"
+
+int decode_ignored_ports(char *s, unsigned short *ports, int ports_len)
+{
+    // count of port decoded, must be even
+    int i = 0;
+    // current port number
+    int p;
+    // check valid
+    if (s == NULL)
+        return -1;
+    // must be even count
+    if (ports_len == 0 || ports_len % 2 != 0)
+        return -1;
+    for (;;)
+    {
+        p = 0;
+        // extract p
+        while (*s >= '0' && *s <= '9')
+        {
+            p *= 10;
+            p += (*s - '0');
+            s++;
+        }
+        // validate p
+        if (p < 1 || p > PORT_MAX)
+            return -1;
+        // assign p
+        ports[i] = p;
+        i++;
+        // too much
+        if (i >= ports_len)
+            break;
+        // detect '-', ',', '\0'
+        if (*s == '-')
+        {
+            // '-' found at leading
+            if (i % 2 == 0)
+                return -1;
+        }
+        else if (*s == ',' || *s == '\0')
+        {
+            // ',' found with even number of ports, expand it
+            if (i % 2 == 1)
+            {
+                ports[i] = ports[i - 1];
+                i++;
+            }
+            // break if ends reached
+            if (*s == '\0')
+                break;
+        }
+        else
+            // unknown char
+            return -1;
+        // move to next char
+        s++;
+    }
+    return i;
+}
