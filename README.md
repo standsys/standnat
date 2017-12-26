@@ -1,2 +1,3 @@
 # standnat
-Full Mapping NAT Server for StandSys
+
+StandSys full-mapping remote NAT kernel module
