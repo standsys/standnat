@@ -74,7 +74,7 @@ struct sn_config *init_config(void)
     dlog("'port' set to %d", _config.port);
     // ignore
     memset(_config.ignores, 0, sizeof(_config.ignores));
-    igc = decode_ignored_ports(_ignore_in, (unsigned short *)_config.ignores, (SN_MAX_IGNORED_PORT_RANGES - 1) * 2);
+    igc = sn_decode_ignore(_ignore_in, (unsigned short *)_config.ignores, (SN_MAX_IGNORED_PORT_RANGES - 1) * 2);
     if (igc < 0)
     {
         elog("invalid param 'ignore'");

@@ -30,6 +30,6 @@
 #define wlog(format, ...) pr_warn(SN_NAME ": " format "\n", ##__VA_ARGS__)
 #define elog(format, ...) pr_err(SN_NAME ": " format "\n", ##__VA_ARGS__)
 
-int decode_ignored_ports(char *s, unsigned short *ports, int ports_len);
+int sn_decode_ignore(char *s, unsigned short *ports, int ports_len);
 
 #endif

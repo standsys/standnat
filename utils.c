@@ -21,7 +21,7 @@
 
 #include "utils.h"
 
-int decode_ignored_ports(char *s, unsigned short *ports, int ports_len)
+int sn_decode_ignore(char *s, unsigned short *ports, int ports_len)
 {
     // count of port decoded, must be even
     int i = 0;
