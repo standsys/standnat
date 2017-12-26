@@ -39,13 +39,13 @@ MODULE_DESCRIPTION("Linux kernel module for StandSys remote full-mapping NAT");
  * entrypoint
  */
 
-static int __init init_standnat(void)
+static int init_standnat(void)
 {
     printk(KERN_INFO "standnat initialized\n");
     return SUCCESS;
 }
 
-static void __exit deinit_standnat(void)
+static void deinit_standnat(void)
 {
     printk(KERN_INFO "standnat deinitialized\n");
     return;
