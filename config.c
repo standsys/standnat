@@ -1,7 +1,7 @@
 /**
- * filter.h
+ * config.c
  *
- * packet filter using Netfilter
+ * version information
  *
  * Copyright (C) 2017 Yanke Guo <ryan@islandzero.net>
  *
@@ -19,26 +19,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _STANDNAT_FILTER_H_
-#define _STANDNAT_FILTER_H_
+#include "config.h"
 
-#include <linux/types.h>
+#include <linux/module.h>
 
-/**
- * whitelisted port range of from, to
- */
-struct sn_whitelist {
-    unsigned short from, to;
-};
-
-/**
- * init the filter subsystem
- */
-int init_filter(struct sn_whitelist *whitelists, int whitelists_len, __be32 ip);
-
-/**
- * deinit the filter subsystem
- */
-void deinit_filter(void);
-
-#endif
+MODULE_VERSION(SN_VERSION);
+MODULE_LICENSE("GPL");
+MODULE_AUTHOR("Yanke Guo <ryan@islandzero.net>");
+MODULE_DESCRIPTION(SN_NAME " v" SN_VERSION ", kernel module for StandSys remote full-mapping NAT");

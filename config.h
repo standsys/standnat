@@ -1,7 +1,7 @@
 /**
- * filter.h
+ * config.h
  *
- * packet filter using Netfilter
+ * version information
  *
  * Copyright (C) 2017 Yanke Guo <ryan@islandzero.net>
  *
@@ -19,26 +19,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _STANDNAT_FILTER_H_
-#define _STANDNAT_FILTER_H_
+#ifndef _STANDNAT_CONFIG_H_
+#define _STANDNAT_CONFIG_H_
 
-#include <linux/types.h>
-
-/**
- * whitelisted port range of from, to
- */
-struct sn_whitelist {
-    unsigned short from, to;
-};
-
-/**
- * init the filter subsystem
- */
-int init_filter(struct sn_whitelist *whitelists, int whitelists_len, __be32 ip);
-
-/**
- * deinit the filter subsystem
- */
-void deinit_filter(void);
+#define SN_NAME "standnat"
+#define SN_VERSION "1.0"
 
 #endif

@@ -26,6 +26,10 @@
 #include <linux/netfilter.h>
 #include <linux/netfilter_ipv4.h>
 
+static struct sn_whitelist *_whitelists;
+static int _whitelists_len;
+static __be32 _ip;
+
 static unsigned int hook_func(void *, struct sk_buff *, const struct nf_hook_state *);
 
 static struct nf_hook_ops _nf_hook = {
@@ -34,13 +38,27 @@ static struct nf_hook_ops _nf_hook = {
     .pf = PF_INET,
     .priority = NF_IP_PRI_FIRST};
 
+static int is_whitelisted(unsigned short port)
+{
+    int i;
+    for (i = 0; i < _whitelists_len; i++)
+    {
+        if (port >= _whitelists[i].from && port <= _whitelists[i].to)
+            return 1;
+    }
+    return 0;
+}
+
 static unsigned int hook_func(void *priv, struct sk_buff *skb, const struct nf_hook_state *state)
 {
     return NF_ACCEPT;
 }
 
-int init_filter(void)
+int init_filter(struct sn_whitelist *whitelists, int whitelists_len, __be32 ip)
 {
+    _whitelists = whitelists;
+    _whitelists_len = whitelists_len;
+    _ip = ip;
     return nf_register_hook(&_nf_hook);
 }
 
